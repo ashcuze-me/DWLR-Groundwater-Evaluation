@@ -19,7 +19,7 @@ The system will integrate:
 
 ## Project Status
 
-🚧 Initial development
+🚧 Initial development :(
 
 ## Architecture
 
