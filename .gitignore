@@ -261,3 +261,26 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+
+# Python testing
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
