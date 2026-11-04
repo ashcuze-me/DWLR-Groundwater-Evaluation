@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trend Analysis | DWLR</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6f8;
+            color: #193344;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 195px;
+            height: 100vh;
+            background: #102e3d;
+            color: white;
+            padding: 25px 12px;
+        }
+
+        .brand {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 8px 5px 45px;
+        }
+
+        .brand small {
+            display: block;
+            color: #8db4c3;
+            font-size: 9px;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .nav-label {
+            color: #8db4c3;
+            font-size: 10px;
+            margin: 20px 7px;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            display: block;
+            color: #dce8ed;
+            text-decoration: none;
+            padding: 13px 12px;
+            margin-bottom: 7px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #234957;
+            border-left: 3px solid #20b8a5;
+        }
+
+        .main {
+            margin-left: 195px;
+            padding: 35px;
+            min-height: 100vh;
+        }
+
+        .eyebrow {
+            color: #119b91;
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        h1 { margin: 12px 0 8px; font-size: 27px; }
+        .subtitle { color: #8295a0; font-size: 13px; }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin: 28px 0;
+            flex-wrap: wrap;
+        }
+
+        select {
+            padding: 11px;
+            border: 1px solid #dce4e8;
+            border-radius: 7px;
+            background: white;
+            min-width: 170px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card, .chart-card, .table-card {
+            background: white;
+            border: 1px solid #e8edef;
+            border-radius: 11px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(20,50,60,.03);
+        }
+
+        .card p {
+            color: #8295a0;
+            font-size: 12px;
+        }
+
+        .card h2 {
+            font-size: 27px;
+            margin: 13px 0 6px;
+        }
+
+        .increasing h2 { color: #d66d69; }
+        .decreasing h2 { color: #15977e; }
+        .uncertain h2 { color: #c28b35; }
+
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .chart-card h3, .table-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .chart-card p, .table-card p {
+            color: #8295a0;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .chart-container { height: 280px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 10px;
+            border-bottom: 1px solid #edf1f3;
+        }
+
+        th {
+            color: #8295a0;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .status {
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+        }
+
+        .red { background: #fce8e7; color: #bd5650; }
+        .green { background: #e1f4ed; color: #18876d; }
+        .yellow { background: #fff3d9; color: #a87920; }
+
+        @media(max-width: 850px) {
+            .sidebar { width: 155px; }
+            .main { margin-left: 155px; padding: 20px; }
+            .cards, .charts { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <div class="brand">
+        💧 DWLR INTEL
+        <small>GROUNDWATER SYSTEM</small>
+    </div>
+
+    <div class="nav-label">WORKSPACE</div>
+
+    <a href="index.html" class="nav-item">▦ &nbsp; Overview</a>
+    <a href="historical.html" class="nav-item">◉ &nbsp; Historical Analysis</a>
+    <a href="trend.html" class="nav-item active">⌁ &nbsp; Trend Analysis</a>
+    <a href="forecasting.html" class="nav-item">↗ &nbsp; Forecasting</a>
+    <a href="data-explorer.html" class="nav-item">▤ &nbsp; Data Explorer</a>
+</aside>
+
+<main class="main">
+
+    <div class="eyebrow">GROUNDWATER INTELLIGENCE / INDIA</div>
+    <h1>Groundwater Trend Analysis</h1>
+    <p class="subtitle">Explore groundwater trend classifications across monitoring locations.</p>
+
+    <div class="filters">
+        <select id="stateFilter">
+            <option value="all">All States / UTs</option>
+            <option>Tamil Nadu</option>
+            <option>Karnataka</option>
+            <option>Maharashtra</option>
+            <option>Rajasthan</option>
+            <option>Punjab</option>
+        </select>
+
+        <select id="trendFilter">
+            <option value="all">All Trend Categories</option>
+            <option value="increasing">Increasing Depth</option>
+            <option value="decreasing">Decreasing Depth</option>
+            <option value="uncertain">Uncertain</option>
+        </select>
+    </div>
+
+    <div class="cards">
+        <div class="card increasing">
+            <p>Increasing Depth</p>
+            <h2 id="increasingCount">2,316</h2>
+            <p>Provisional locations</p>
+        </div>
+
+        <div class="card decreasing">
+            <p>Decreasing Depth</p>
+            <h2 id="decreasingCount">2,117</h2>
+            <p>Provisional locations</p>
+        </div>
+
+        <div class="card uncertain">
+            <p>Uncertain Trend</p>
+            <h2 id="uncertainCount">12,802</h2>
+            <p>Provisional locations</p>
+        </div>
+    </div>
+
+    <div class="charts">
+        <div class="chart-card">
+            <h3>Trend Distribution</h3>
+            <p>Classification breakdown across locations</p>
+            <div class="chart-container">
+                <canvas id="trendPieChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3>Trend Comparison</h3>
+            <p>Number of locations in each category</p>
+            <div class="chart-container">
+                <canvas id="trendBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <h3>Location Trend Classification</h3>
+        <p>Example records for the trend classification table</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>District</th>
+                    <th>State</th>
+                    <th>Trend</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="trendTable">
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<script>
+    // DEMO DATA — replace with backend data later
+
+    const trendData = {
+        increasing: 2316,
+        decreasing: 2117,
+        uncertain: 12802
+    };
+
+    const sampleLocations = [
+        {
+            location: "Sample Location 01",
+            district: "Chennai",
+            state: "Tamil Nadu",
+            trend: "Increasing Depth",
+            type: "increasing"
+        },
+        {
+            location: "Sample Location 02",
+            district: "Mysuru",
+            state: "Karnataka",
+            trend: "Decreasing Depth",
+            type: "decreasing"
+        },
+        {
+            location: "Sample Location 03",
+            district: "Pune",
+            state: "Maharashtra",
+            trend: "Uncertain",
+            type: "uncertain"
+        },
+        {
+            location: "Sample Location 04",
+            district: "Jaipur",
+            state: "Rajasthan",
+            trend: "Increasing Depth",
+            type: "increasing"
+        },
+        {
+            location: "Sample Location 05",
+            district: "Ludhiana",
+            state: "Punjab",
+            trend: "Decreasing Depth",
+            type: "decreasing"
+        }
+    ];
+
+    // KPI values
+    document.getElementById("increasingCount").textContent =
+        trendData.increasing.toLocaleString("en-IN");
+
+    document.getElementById("decreasingCount").textContent =
+        trendData.decreasing.toLocaleString("en-IN");
+
+    document.getElementById("uncertainCount").textContent =
+        trendData.uncertain.toLocaleString("en-IN");
+
+    // Doughnut chart
+    new Chart(document.getElementById("trendPieChart"), {
+        type: "doughnut",
+        data: {
+            labels: ["Increasing Depth", "Decreasing Depth", "Uncertain"],
+            datasets: [{
+                data: [
+                    trendData.increasing,
+                    trendData.decreasing,
+                    trendData.uncertain
+                ],
+                backgroundColor: ["#d66d69", "#15977e", "#e5b454"],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
+
+    // Bar chart
+    new Chart(document.getElementById("trendBarChart"), {
+        type: "bar",
+        data: {
+            labels: ["Increasing", "Decreasing", "Uncertain"],
+            datasets: [{
+                label: "Locations",
+                data: [
+                    trendData.increasing,
+                    trendData.decreasing,
+                    trendData.uncertain
+                ],
+                backgroundColor: ["#d66d69", "#15977e", "#e5b454"],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Populate and filter sample table
+    function renderTable() {
+        const state = document.getElementById("stateFilter").value;
+        const trend = document.getElementById("trendFilter").value;
+        const table = document.getElementById("trendTable");
+
+        const filtered = sampleLocations.filter(item => {
+            return (state === "all" || item.state === state) &&
+                   (trend === "all" || item.type === trend);
+        });
+
+        table.innerHTML = "";
+
+        filtered.forEach(item => {
+            const row = document.createElement("tr");
+
+            const statusClass = {
+                increasing: "red",
+                decreasing: "green",
+                uncertain: "yellow"
+            }[item.type];
+
+            row.innerHTML = `
+                <td>${item.location}</td>
+                <td>${item.district}</td>
+                <td>${item.state}</td>
+                <td>${item.trend}</td>
+                <td><span class="status ${statusClass}">Provisional</span></td>
+            `;
+
+            table.appendChild(row);
+        });
+
+        if (filtered.length === 0) {
+            table.innerHTML = `
+                <tr><td colspan="5">No matching sample records.</td></tr>
+            `;
+        }
+    }
+
+    document.getElementById("stateFilter")
+        .addEventListener("change", renderTable);
+
+    document.getElementById("trendFilter")
+        .addEventListener("change", renderTable);
+
+    renderTable();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWLR | Groundwater Intelligence</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Leaflet Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">💧</div>
+            <div>
+                <div class="brand-name">DWLR INTEL</div>
+                <div class="brand-sub">GROUNDWATER SYSTEM</div>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav>
+            <div class="nav-item active" data-section="Overview">
+                <span class="nav-icon">▦</span> Overview
+            </div>
+
+            
+
+            <a href="historical.html" class="nav-item">
+    <span class="nav-icon">◷</span> Historical Analysis
+</a>
+
+            <a href="trend.html" class="nav-item">
+    <span class="nav-icon">↗</span> Trend Analysis
+</a>
+
+            <a href="forecasting.html" class="nav-item">
+    <span class="nav-icon">◉</span> Forecasting
+</a>
+
+            <a href="data-explorer.html" class="nav-item">
+    <span class="nav-icon">▤</span> Data Explorer
+</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            DWLR Groundwater Evaluation<br>
+            Research & Analytics Platform<br>
+            <span style="color:#43c4ad">●</span> Development Preview
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <section id="overviewPage"></section>
+        <header class="topbar">
+            <div>
+                <div class="eyebrow">GROUNDWATER INTELLIGENCE / INDIA</div>
+                <h1 id="pageTitle">Dashboard Overview</h1>
+                <p class="subtitle">
+                    Monitor, explore and understand groundwater observations.
+                </p>
+            </div>
+
+            <div class="top-actions">
+                <div class="date-pill" id="currentDate"></div>
+                <div class="profile">DW</div>
+            </div>
+        </header>
+
+        <!-- FILTERS -->
+        <div class="filters">
+            <select id="stateFilter">
+                <option value="All">All States / UTs</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Rajasthan">Rajasthan</option>
+            </select>
+
+            <select id="periodFilter">
+                <option value="All">All Time Periods</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+            </select>
+        </div>
+
+        <!-- KPI CARDS -->
+        <section class="kpi-grid">
+
+            <div class="card">
+                <div class="kpi-top">
+                    <span class="kpi-label">Monitoring Locations</span>
+                    <div class="kpi-icon icon-teal">📍</div>
+                </div>
+                <div class="kpi-value">17,235</div>
+                <div class="kpi-note">Provisional analytical locations</div>
+            </div>
+
+            <div class="card">
+                <div class="kpi-top">
+                    <span class="kpi-label">Historical Observations</span>
+                    <div class="kpi-icon icon-blue">▤</div>
+                </div>
+                <div class="kpi-value">405K+</div>
+                <div class="kpi-note">Recorded observations, 1994–2025</div>
+            </div>
+
+            <div class="card">
+                <div class="kpi-top">
+                    <span class="kpi-label">Increasing Depth Trends</span>
+                    <div class="kpi-icon icon-orange">↗</div>
+                </div>
+                <div class="kpi-value">2,316</div>
+                <div class="kpi-note">Provisional trend classifications</div>
+            </div>
+
+            <div class="card">
+                <div class="kpi-top">
+                    <span class="kpi-label">Decreasing Depth Trends</span>
+                    <div class="kpi-icon icon-purple">↘</div>
+                </div>
+                <div class="kpi-value">2,117</div>
+                <div class="kpi-note">Provisional trend classifications</div>
+            </div>
+
+        </section>
+
+        <!-- CHART AND MAP -->
+        <section class="content-grid">
+
+            <div class="card">
+                <div class="card-heading">
+                    <div>
+                        <div class="card-title">Groundwater Level Trends</div>
+                        <div class="card-description">
+                            Illustrative annual observation series
+                        </div>
+                    </div>
+                    <span class="tag">HISTORICAL</span>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="groundwaterChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-heading">
+                    <div>
+                        <div class="card-title">Spatial Distribution</div>
+                        <div class="card-description">
+                            Example monitoring locations in India
+                        </div>
+                    </div>
+                    <span class="tag">MAP VIEW</span>
+                </div>
+
+                <div id="groundwaterMap"></div>
+            </div>
+
+        </section>
+
+        <!-- LOWER SECTION -->
+        <section class="bottom-grid">
+
+            <div class="card">
+                <div class="card-heading">
+                    <div>
+                        <div class="card-title">Groundwater Trend Classification</div>
+                        <div class="card-description">
+                            Preliminary analytical results
+                        </div>
+                    </div>
+                    <span class="tag">TREND V2</span>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CLASSIFICATION</th>
+                                <th>LOCATIONS</th>
+                                <th>INTERPRETATION</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><span class="status increasing">Increasing</span></td>
+                                <td>2,316</td>
+                                <td>Recorded depth increasing</td>
+                            </tr>
+
+                            <tr>
+                                <td><span class="status decreasing">Decreasing</span></td>
+                                <td>2,117</td>
+                                <td>Recorded depth decreasing</td>
+                            </tr>
+
+                            <tr>
+                                <td><span class="status uncertain">Uncertain</span></td>
+                                <td>12,802</td>
+                                <td>Trend not conclusive</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-heading">
+                    <div>
+                        <div class="card-title">Assessment Indicators</div>
+                        <div class="card-description">
+                            Planned platform capabilities
+                        </div>
+                    </div>
+                </div>
+
+                <div class="indicator">
+                    <div class="indicator-icon">📈</div>
+                    <div>
+                        <div class="indicator-name">Temporal Analysis</div>
+                        <div class="indicator-desc">Long-term water-level variation</div>
+                    </div>
+                    <div class="indicator-value">01</div>
+                </div>
+
+                <div class="indicator">
+                    <div class="indicator-icon">🌍</div>
+                    <div>
+                        <div class="indicator-name">Spatial Assessment</div>
+                        <div class="indicator-desc">Geographical distribution patterns</div>
+                    </div>
+                    <div class="indicator-value">02</div>
+                </div>
+
+                <div class="indicator">
+                    <div class="indicator-icon">🔎</div>
+                    <div>
+                        <div class="indicator-name">Trend Detection</div>
+                        <div class="indicator-desc">Groundwater trend classification</div>
+                    </div>
+                    <div class="indicator-value">03</div>
+                </div>
+
+                <div class="indicator">
+                    <div class="indicator-icon">🔮</div>
+                    <div>
+                        <div class="indicator-name">Forecasting</div>
+                        <div class="indicator-desc">Future level estimation</div>
+                    </div>
+                    <div class="indicator-value">04</div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="disclaimer">
+            <strong>Data note:</strong> This is an initial UI prototype. The chart and map contain illustrative demonstration data, not verified live measurements. Trend classifications are provisional and should not be interpreted as definitive groundwater depletion or recovery. The dashboard will be connected to the project's validated datasets and API as development progresses.
+        </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    
+</script>
+<script src="data.js" defer></script>
+<script src="script.js" defer></script>
+</body>
+
+</html>

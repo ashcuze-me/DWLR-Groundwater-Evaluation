@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Analysis | DWLR</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6f8;
+            color: #193344;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 195px;
+            height: 100vh;
+            background: #102e3d;
+            color: white;
+            padding: 25px 12px;
+        }
+
+        .brand {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 8px 5px 45px;
+        }
+
+        .brand small {
+            display: block;
+            color: #8db4c3;
+            font-size: 9px;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .nav-label {
+            color: #8db4c3;
+            font-size: 10px;
+            margin: 20px 7px;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            display: block;
+            color: #dce8ed;
+            text-decoration: none;
+            padding: 13px 12px;
+            margin-bottom: 7px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #234957;
+            border-left: 3px solid #20b8a5;
+        }
+
+        .main {
+            margin-left: 195px;
+            padding: 35px;
+            min-height: 100vh;
+        }
+
+        .eyebrow {
+            color: #119b91;
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        h1 { margin: 12px 0 8px; font-size: 27px; }
+        .subtitle { color: #8295a0; font-size: 13px; }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin: 28px 0;
+            flex-wrap: wrap;
+        }
+
+        select {
+            padding: 12px;
+            border: 1px solid #dce4e8;
+            border-radius: 7px;
+            background: white;
+            min-width: 180px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .card, .chart-card {
+            background: white;
+            border: 1px solid #e8edef;
+            border-radius: 11px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(20, 50, 60, .03);
+        }
+
+        .card p { color: #8295a0; font-size: 12px; }
+        .card h2 { font-size: 25px; margin: 12px 0 5px; }
+
+        .chart-card { margin-bottom: 20px; }
+        .chart-card h3 { font-size: 16px; margin-bottom: 7px; }
+        .chart-card p { color: #8295a0; font-size: 12px; margin-bottom: 20px; }
+
+        .chart-container { height: 350px; }
+
+        .note {
+            color: #81939c;
+            font-size: 11px;
+            line-height: 1.6;
+            margin-top: 18px;
+        }
+
+        @media(max-width: 800px) {
+            .sidebar { width: 150px; }
+            .main { margin-left: 150px; padding: 20px; }
+            .cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <div class="brand">
+        💧 DWLR INTEL
+        <small>GROUNDWATER SYSTEM</small>
+    </div>
+
+    <div class="nav-label">WORKSPACE</div>
+
+    <a href="index.html" class="nav-item">▦ &nbsp; Overview</a>
+    <a href="historical.html" class="nav-item active">◉ &nbsp; Historical Analysis</a>
+    <a href="trend.html" class="nav-item">⌁ &nbsp; Trend Analysis</a>
+    <a href="forecasting.html" class="nav-item">↗ &nbsp; Forecasting</a>
+    <a href="data-explorer.html" class="nav-item">▤ &nbsp; Data Explorer</a>
+</aside>
+
+<main class="main">
+
+    <div class="eyebrow">GROUNDWATER INTELLIGENCE / INDIA</div>
+
+    <h1>Historical Groundwater Analysis</h1>
+    <p class="subtitle">
+        Explore groundwater observations recorded between 1994 and 2025.
+    </p>
+
+    <div class="filters">
+        <select id="yearFilter">
+            <option value="all">All Years</option>
+            <option value="1994">1994</option>
+            <option value="2000">2000</option>
+            <option value="2005">2005</option>
+            <option value="2010">2010</option>
+            <option value="2015">2015</option>
+            <option value="2020">2020</option>
+            <option value="2025">2025</option>
+        </select>
+
+        <select id="stateFilter">
+            <option value="all">All States / UTs</option>
+        </select>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <p>Observation Period</p>
+            <h2>1994–2025</h2>
+            <p>Historical dataset coverage</p>
+        </div>
+
+        <div class="card">
+            <p>Historical Observations</p>
+            <h2>405,078</h2>
+            <p>Recorded groundwater observations</p>
+        </div>
+
+        <div class="card">
+            <p>Analytical Locations</p>
+            <h2>17,235</h2>
+            <p>Provisional location groupings</p>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>Groundwater Level Trends</h3>
+        <p>Demonstration chart — not yet connected to actual historical records.</p>
+
+        <div class="chart-container">
+            <canvas id="historicalChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>Historical Data Overview</h3>
+        <p>
+            The available dataset contains observations across multiple
+            Indian states, districts, blocks and villages.
+        </p>
+        <p class="note">
+            Note: The figures above are based on the current project dataset.
+            The chart is illustrative. Groundwater depth (mbgl) and water
+            level changes require careful interpretation before drawing
+            conclusions about depletion or recovery.
+        </p>
+    </div>
+
+</main>
+
+<script>
+    const ctx = document.getElementById("historicalChart");
+
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [{
+                label: "Illustrative groundwater depth (mbgl)",
+                data: [12.4, 12.7, 12.5, 13.1, 13.4, 13.2],
+                borderColor: "#0d9e91",
+                backgroundColor: "rgba(13,158,145,0.12)",
+                fill: true,
+                tension: 0.35,
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+
+</body>
+</html>

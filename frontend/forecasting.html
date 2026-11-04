@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groundwater Forecasting | DWLR</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>DWLR</h2>
+            <p>Groundwater Evaluation</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">⌂</span> Overview
+            </a>
+
+            <a href="historical.html" class="nav-item">
+                <span class="nav-icon">◷</span> Historical Analysis
+            </a>
+
+            <a href="trend.html" class="nav-item">
+                <span class="nav-icon">↗</span> Trend Analysis
+            </a>
+
+            <a href="forecasting.html" class="nav-item active">
+                <span class="nav-icon">◉</span> Forecasting
+            </a>
+
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">▤</span> Data Explorer
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h1>Groundwater Forecasting</h1>
+                <p>Projected groundwater level patterns and future estimates</p>
+            </div>
+            <span class="status-badge">DEMO DATA</span>
+        </header>
+
+        <section class="forecast-cards">
+
+            <div class="forecast-card">
+                <p>Forecast Period</p>
+                <h2>2026–2030</h2>
+                <span>Illustrative projection</span>
+            </div>
+
+            <div class="forecast-card">
+                <p>Forecast Locations</p>
+                <h2>5</h2>
+                <span>Sample locations</span>
+            </div>
+
+            <div class="forecast-card">
+                <p>Model Status</p>
+                <h2>Demo</h2>
+                <span>Model integration pending</span>
+            </div>
+
+        </section>
+
+        <section class="forecast-panel">
+            <div class="section-heading">
+                <div>
+                    <h2>Groundwater Level Forecast</h2>
+                    <p>Historical observations and illustrative future estimates</p>
+                </div>
+
+                <select id="locationSelect">
+                    <option value="Location 1">Sample Location 1</option>
+                    <option value="Location 2">Sample Location 2</option>
+                    <option value="Location 3">Sample Location 3</option>
+                </select>
+            </div>
+
+            <div class="forecast-chart-container">
+                <canvas id="forecastChart"></canvas>
+            </div>
+        </section>
+
+        <section class="forecast-panel">
+            <h2>Forecast Interpretation</h2>
+
+            <div class="interpretation-grid">
+                <div class="interpretation-item">
+                    <span class="interpretation-dot increasing"></span>
+                    <div>
+                        <h3>Increasing Depth</h3>
+                        <p>May indicate a decline in groundwater levels.</p>
+                    </div>
+                </div>
+
+                <div class="interpretation-item">
+                    <span class="interpretation-dot decreasing"></span>
+                    <div>
+                        <h3>Decreasing Depth</h3>
+                        <p>May indicate a rise in groundwater levels.</p>
+                    </div>
+                </div>
+
+                <div class="interpretation-item">
+                    <span class="interpretation-dot uncertain"></span>
+                    <div>
+                        <h3>Uncertain Forecast</h3>
+                        <p>Future patterns require further assessment.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <p class="demo-note">
+            Note: All forecast values on this page are illustrative dummy data.
+            Actual predictions will be integrated when the forecasting model and
+            backend data become available.
+        </p>
+
+    </main>
+</div>
+
+<style>
+.forecast-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 25px 0;
+}
+
+.forecast-card,
+.forecast-panel {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+.forecast-card p {
+    color: #718096;
+    margin: 0 0 12px;
+}
+
+.forecast-card h2 {
+    font-size: 28px;
+    margin: 0 0 8px;
+    color: #173b50;
+}
+
+.forecast-card span,
+.section-heading p {
+    color: #82909c;
+    font-size: 13px;
+}
+
+.forecast-panel {
+    margin-bottom: 24px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.section-heading h2,
+.forecast-panel > h2 {
+    margin: 0 0 8px;
+    color: #173b50;
+}
+
+.section-heading p {
+    margin: 0;
+}
+
+.section-heading select {
+    padding: 10px;
+    border: 1px solid #dce3e8;
+    border-radius: 7px;
+    background: white;
+}
+
+.forecast-chart-container {
+    height: 350px;
+    position: relative;
+}
+
+.interpretation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 22px;
+}
+
+.interpretation-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.interpretation-item h3 {
+    margin: 0 0 7px;
+    font-size: 15px;
+}
+
+.interpretation-item p {
+    margin: 0;
+    color: #718096;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.interpretation-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.increasing { background: #e76f51; }
+.decreasing { background: #2a9d8f; }
+.uncertain { background: #e9b949; }
+
+.demo-note {
+    color: #718096;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.status-badge {
+    background: #fff3d6;
+    color: #936b17;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+@media (max-width: 800px) {
+    .forecast-cards,
+    .interpretation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+const forecastData = {
+    "Location 1": {
+        historical: [12.4, 12.7, 12.5, 13.1, 13.4, 13.2],
+        forecast: [13.5, 13.7, 13.9, 14.0, 14.2]
+    },
+    "Location 2": {
+        historical: [10.2, 10.1, 10.4, 10.3, 10.5, 10.4],
+        forecast: [10.6, 10.5, 10.7, 10.6, 10.8]
+    },
+    "Location 3": {
+        historical: [15.1, 15.3, 15.6, 15.5, 15.8, 16.0],
+        forecast: [16.2, 16.3, 16.5, 16.7, 16.8]
+    }
+};
+
+const labels = [
+    "2021", "2022", "2023", "2024", "2025", "2026",
+    "2027", "2028", "2029", "2030", "2031"
+];
+
+const ctx = document.getElementById("forecastChart");
+
+const forecastChart = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: "Historical Data",
+                data: [...forecastData["Location 1"].historical,
+                    ...Array(5).fill(null)],
+                borderColor: "#248b83",
+                backgroundColor: "#248b83",
+                borderWidth: 3,
+                tension: 0.35
+            },
+            {
+                label: "Forecast",
+                data: [...Array(5).fill(null),
+                    forecastData["Location 1"].historical[5],
+                    ...forecastData["Location 1"].forecast],
+                borderColor: "#e9a23b",
+                backgroundColor: "#e9a23b",
+                borderWidth: 3,
+                borderDash: [7, 5],
+                tension: 0.35
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: "top"
+            }
+        },
+        scales: {
+            y: {
+                title: {
+                    display: true,
+                    text: "Water Level (mbgl)"
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: "Year"
+                }
+            }
+        }
+    }
+});
+
+document.getElementById("locationSelect").addEventListener("change", function () {
+    const selected = forecastData[this.value];
+
+    forecastChart.data.datasets[0].data = [
+        ...selected.historical,
+        ...Array(5).fill(null)
+    ];
+
+    forecastChart.data.datasets[1].data = [
+        ...Array(5).fill(null),
+        selected.historical[5],
+        ...selected.forecast
+    ];
+
+    forecastChart.update();
+});
+</script>
+
+</body>
+</html>
