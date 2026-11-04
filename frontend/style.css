@@ -1,0 +1,448 @@
+:root {
+            --navy: #102c3b;
+            --navy-light: #183d4d;
+            --teal: #168b80;
+            --teal-light: #e5f4f1;
+            --bg: #f4f7f8;
+            --white: #ffffff;
+            --text: #243b46;
+            --muted: #84949c;
+            --border: #e8edef;
+            --green: #299b72;
+            --red: #d46c68;
+            --yellow: #d6a33e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 250px;
+            background: var(--navy);
+            color: white;
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 10px;
+            margin-bottom: 48px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: #1d8e83;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 23px;
+        }
+
+        .brand-name {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: 17px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-sub {
+            font-size: 10px;
+            color: #9db5bf;
+            letter-spacing: 1.5px;
+            margin-top: 3px;
+        }
+
+        .nav-label {
+            color: #8ba4ae;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 0 12px;
+            margin-bottom: 14px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            margin-bottom: 5px;
+            border-radius: 9px;
+            color: #c0d0d6;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #214653;
+            color: white;
+        }
+
+        .nav-item.active {
+            border-left: 3px solid #43c4ad;
+        }
+
+        .nav-icon {
+            font-size: 17px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 18px 12px 0;
+            border-top: 1px solid #31505d;
+            color: #a9bdc5;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        /* MAIN CONTENT */
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px 36px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            letter-spacing: 1.7px;
+            color: var(--teal);
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .date-pill {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .profile {
+            width: 38px;
+            height: 38px;
+            background: #d9eee9;
+            color: #167a70;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* FILTERS */
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        select {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 10px 13px;
+            border-radius: 8px;
+            font-family: inherit;
+            color: var(--text);
+            font-size: 12px;
+            outline: none;
+            min-width: 145px;
+        }
+
+        /* KPI CARDS */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(20, 55, 65, 0.025);
+        }
+
+        .kpi-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 17px;
+        }
+
+        .kpi-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .kpi-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            font-size: 17px;
+        }
+
+        .icon-teal { background: #e6f5f2; }
+        .icon-blue { background: #eaf1f8; }
+        .icon-orange { background: #fbf1e5; }
+        .icon-purple { background: #f0ebfa; }
+
+        .kpi-value {
+            font-family: 'Manrope', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .kpi-note {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        /* CONTENT GRID */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .card-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .card-description {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .tag {
+            font-size: 10px;
+            background: var(--teal-light);
+            color: var(--teal);
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .chart-container {
+            height: 260px;
+            position: relative;
+        }
+
+        #groundwaterMap {
+            height: 300px;
+            width: 100%;
+            border-radius: 9px;
+            z-index: 1;
+        }
+
+        /* LOWER SECTION */
+
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 600;
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            font-size: 11px;
+            padding: 15px 8px;
+            border-bottom: 1px solid #f0f3f4;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status.increasing {
+            background: #fcebea;
+            color: #c35f5b;
+        }
+
+        .status.decreasing {
+            background: #e5f5ee;
+            color: #23875e;
+        }
+
+        .status.uncertain {
+            background: #fbf3e4;
+            color: #aa812c;
+        }
+
+        .indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .indicator-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            background: #eef5f5;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+
+        .indicator-name {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .indicator-desc {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .indicator-value {
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            padding: 13px 16px;
+            border-radius: 9px;
+            background: #edf3f4;
+            color: #657982;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+            .sidebar { width: 210px; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .content-grid, .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .app { display: block; }
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+            .brand { margin-bottom: 18px; }
+            .sidebar nav {
+                display: flex;
+                overflow-x: auto;
+                gap: 5px;
+            }
+            .nav-label, .sidebar-bottom { display: none; }
+            .nav-item {
+                white-space: nowrap;
+                margin: 0;
+                padding: 10px;
+            }
+            .main { padding: 22px 15px; }
+            .topbar { align-items: flex-start; }
+            h1 { font-size: 21px; }
+            .date-pill { display: none; }
+            .kpi-grid { gap: 10px; }
+            .kpi-value { font-size: 23px; }
+            .card { padding: 15px; }
+            table { min-width: 450px; }
+            .table-wrapper { overflow-x: auto; }
+        }
