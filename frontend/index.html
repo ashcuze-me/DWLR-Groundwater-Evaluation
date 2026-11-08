@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DWLR Groundwater Explorer</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f5;
+            color: #20352b;
+        }
+
+        header {
+            background: #145c42;
+            color: white;
+            padding: 22px 6%;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 27px;
+        }
+
+        header p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 28px auto;
+            padding: 0 18px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        input {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px;
+            border: 1px solid #cbd8d0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: #176b4c;
+            color: white;
+        }
+
+        .secondary {
+            background: #e5f1ea;
+            color: #145c42;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #status {
+            margin-top: 14px;
+            line-height: 1.5;
+            color: #4b6255;
+        }
+
+        .result {
+            border: 1px solid #dce7df;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 12px;
+        }
+
+        .result h3 {
+            margin: 0 0 8px;
+            font-size: 17px;
+        }
+
+        .result p {
+            margin: 6px 0;
+            line-height: 1.5;
+        }
+
+        .result button {
+            margin-top: 10px;
+        }
+
+        .metric {
+            background: #edf6f0;
+            border-radius: 10px;
+            padding: 18px;
+            margin: 14px 0;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 28px;
+            margin-top: 8px;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #5e6e64;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: #63736a;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 23px;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .search-row button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>DWLR Groundwater Explorer</h1>
+    <p>Explore recorded groundwater observations near your location.</p>
+</header>
+
+<main>
+
+    <section class="card">
+        <h2>Find a location</h2>
+
+        <p>
+            Enter a village, district, or state name to find
+            available DWLR observations.
+        </p>
+
+        <form id="search-form">
+            <div class="search-row">
+                <input
+                    id="search-input"
+                    type="search"
+                    minlength="2"
+                    placeholder="Example: Chennai, Tamil Nadu"
+                    aria-label="Search by village, district, or state"
+                    required
+                >
+
+                <button class="primary" type="submit">
+                    Search
+                </button>
+            </div>
+        </form>
+
+        <div class="search-row" style="margin-top: 12px;">
+            <button
+                class="secondary"
+                id="location-button"
+                type="button"
+            >
+                Use my location
+            </button>
+        </div>
+
+        <div id="status" role="status" aria-live="polite">
+            Search for a location to get started.
+        </div>
+
+        <div id="results"></div>
+    </section>
+
+    <section class="card" id="details-card" hidden>
+        <h2>Observation details</h2>
+
+        <div id="details"></div>
+    </section>
+
+    <section class="card">
+        <h2>About this data</h2>
+
+        <p>
+            This prototype uses the available January 2026 DWLR
+            dataset to display recorded Depth to Water Level (DTWL)
+            observations.
+        </p>
+
+        <p class="note">
+            These records do not establish real-time groundwater
+            availability. A nearby observation may not represent
+            groundwater conditions at your exact location.
+            Green, yellow, and red availability indicators will
+            be introduced only after a suitable assessment method
+            has been established.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    DWLR Groundwater Evaluation · Research prototype
+</footer>
+
+<script>
+    const searchForm = document.getElementById("search-form");
+    const searchInput = document.getElementById("search-input");
+    const searchStatus = document.getElementById("status");
+    const resultsContainer = document.getElementById("results");
+    const detailsCard = document.getElementById("details-card");
+    const detailsContainer = document.getElementById("details");
+    const locationButton = document.getElementById("location-button");
+
+    function showStatus(message) {
+        searchStatus.textContent = message;
+    }
+
+    function addTextElement(parent, tag, text) {
+        const element = document.createElement(tag);
+        element.textContent = text;
+        parent.appendChild(element);
+        return element;
+    }
+
+    function formatDTWL(value) {
+        if (value === null || value === undefined) {
+            return "Not available";
+        }
+
+        return `${Number(value).toFixed(2)} m`;
+    }
+
+    function renderResult(item, distance = null) {
+        const card = document.createElement("article");
+        card.className = "result";
+
+        addTextElement(
+            card,
+            "h3",
+            item.village !== "Not available"
+                ? item.village
+                : item.district
+        );
+
+        addTextElement(
+            card,
+            "p",
+            `${item.district}, ${item.state}`
+        );
+
+        addTextElement(
+            card,
+            "p",
+            `Recorded DTWL: ${formatDTWL(item.dtwl)}`
+        );
+
+        addTextElement(
+            card,
+            "p",
+            `Observation date: ${item.date}`
+        );
+
+        if (distance !== null) {
+            addTextElement(
+                card,
+                "p",
+                `Distance from your location: ${distance} km`
+            );
+        }
+
+        const button = document.createElement("button");
+        button.className = "secondary";
+        button.textContent = "View details";
+
+        button.addEventListener("click", () => {
+            showDetails(item);
+        });
+
+        card.appendChild(button);
+        resultsContainer.appendChild(card);
+    }
+
+    function showDetails(item) {
+        detailsContainer.replaceChildren();
+
+        addTextElement(
+            detailsContainer,
+            "p",
+            `State/UT: ${item.state}`
+        );
+
+        addTextElement(
+            detailsContainer,
+            "p",
+            `District: ${item.district}`
+        );
+
+        addTextElement(
+            detailsContainer,
+            "p",
+            `Village: ${item.village}`
+        );
+
+        const metric = document.createElement("div");
+        metric.className = "metric";
+
+        addTextElement(
+            metric,
+            "span",
+            "Recorded depth to water level"
+        );
+
+        addTextElement(
+            metric,
+            "strong",
+            formatDTWL(item.dtwl)
+        );
+
+        detailsContainer.appendChild(metric);
+
+        addTextElement(
+            detailsContainer,
+            "p",
+            `Observation date: ${item.date}`
+        );
+
+        addTextElement(
+            detailsContainer,
+            "p",
+            `Coordinates: ${item.latitude}, ${item.longitude}`
+        );
+
+        detailsCard.hidden = false;
+        detailsCard.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    searchForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const query = searchInput.value.trim();
+
+        if (query.length < 2) {
+            showStatus("Enter at least two characters.");
+            return;
+        }
+
+        resultsContainer.replaceChildren();
+        detailsCard.hidden = true;
+
+        showStatus("Searching locations...");
+
+        try {
+            const response = await fetch(
+                `/api/locations/search?q=${encodeURIComponent(query)}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Search request failed.");
+            }
+
+            const data = await response.json();
+
+            if (data.results.length === 0) {
+                showStatus(
+                    "No matching locations were found. Try another name."
+                );
+                return;
+            }
+
+            showStatus(
+                `Showing ${data.count} matching location(s).`
+            );
+
+            data.results.forEach((item) => {
+                renderResult(item);
+            });
+
+        } catch (error) {
+            showStatus(
+                "Unable to search right now. Please try again."
+            );
+        }
+    });
+
+    locationButton.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+            showStatus(
+                "Your browser does not support location access."
+            );
+            return;
+        }
+
+        showStatus("Requesting your location...");
+
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                showStatus("Finding a nearby DWLR observation...");
+                resultsContainer.replaceChildren();
+                detailsCard.hidden = true;
+
+                try {
+                    const params = new URLSearchParams({
+                        latitude: latitude,
+                        longitude: longitude,
+                        radius_km: 50
+                    });
+
+                    const response = await fetch(
+                        `/api/locations/nearest?${params}`
+                    );
+
+                    if (!response.ok) {
+                        throw new Error("Location lookup failed.");
+                    }
+
+                    const data = await response.json();
+
+                    if (!data.found) {
+                        showStatus(data.message);
+                        return;
+                    }
+
+                    showStatus(
+                        "Found a nearby recorded observation."
+                    );
+
+                    renderResult(
+                        data.result,
+                        data.result.distance_km
+                    );
+
+                } catch (error) {
+                    showStatus(
+                        "Unable to find a nearby observation."
+                    );
+                }
+            },
+
+            (error) => {
+                if (error.code === error.PERMISSION_DENIED) {
+                    showStatus(
+                        "Location access was denied. You can search by name instead."
+                    );
+                } else {
+                    showStatus(
+                        "Unable to determine your location. Please search by name."
+                    );
+                }
+            }
+        );
+    });
+</script>
+
+</body>
+</html>
